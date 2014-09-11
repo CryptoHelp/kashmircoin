@@ -2397,7 +2397,7 @@ bool CBlock::AcceptBlock()
     // HARD FORK: switch to version 3 starting from PoS
     if (nHeight > LAST4_POW_BLOCK && nVersion < 3)
         return DoS(100, error("AcceptBlock() : reject version <3 block at height %d", nHeight));
-    if (nHeight <= LAST4_POW_BLOCK && nVersion > 2)
+    if (nHeight <= LAST_POW_BLOCK && nVersion > 2)
         return DoS(100, error("AcceptBlock() : reject version >2 block at height %d", nHeight));
         
     if (IsProofOfWork() && nHeight > LAST_POW_BLOCK && nHeight < MID_POW_BLOCK)
