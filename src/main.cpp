@@ -39,8 +39,8 @@ CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 12);
 CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 20);
 
-static const int64_t nTargetTimespan = 600; // Kashmircoin: every 4 hours
-unsigned int nTargetSpacing = 101; // 1 minute
+static const int64_t nTargetTimespan = 600; // Kashmircoin: every 10 minutes
+unsigned int nTargetSpacing = 101; // 101 seconds
 static const int64_t nInterval = nTargetTimespan / nTargetSpacing;
 unsigned int nStakeMinAge = 7 * 60 * 60; // 7 hours
 unsigned int nStakeMaxAge = 2592000; // 30 days
@@ -1029,6 +1029,14 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees, uint256 prevHash)
 	{
 
 		nSubsidy = 0.006015 * COIN;
+
+	}
+
+    if(nHeight < 98001) //
+
+	{
+
+		nSubsidy = 0 * COIN;
 
 	}
 
@@ -2400,7 +2408,7 @@ bool CBlock::AcceptBlock()
     if (nHeight <= LAST_POW_BLOCK && nVersion > 2)
         return DoS(100, error("AcceptBlock() : reject version >2 block at height %d", nHeight));
         
-    if (IsProofOfWork() && nHeight > LAST_POW_BLOCK && nHeight < MID_POW_BLOCK)
+    if (IsProofOfWork() && nHeight > LAST_POW_BLOCK2 && nHeight < MID_POW_BLOCK)
         return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
 
     if (IsProofOfWork() && nHeight > LAST2_POW_BLOCK && nHeight < MID2_POW_BLOCK)

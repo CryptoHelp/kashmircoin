@@ -28,6 +28,7 @@ class CNode;
 
 
 static const int LAST_POW_BLOCK = 89001; //
+static const int LAST_POW_BLOCK2 = 98000; //
 static const int MID_POW_BLOCK = 398051; // 
 static const int LAST2_POW_BLOCK = 404035; //
 static const int MID2_POW_BLOCK = 1028511; //
