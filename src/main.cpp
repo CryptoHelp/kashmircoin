@@ -1040,7 +1040,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees, uint256 prevHash)
 
 	}
 
-    if(nHeight < 89001) //
+    if(nHeight < 89000) //
 
 	{
 
@@ -1122,12 +1122,20 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees, uint256 prevHash)
 
 	}
 	
+	
+	if(nHeight == 89000) //
+
+    {
+
+       nSubsidy = 0.006015 * COIN;
+
+	}
+	
     if(nHeight == 89001) //
 
     {
 
        nSubsidy = 0.010209 * COIN;
-
 	}
 
     if(nHeight == 404035) //
