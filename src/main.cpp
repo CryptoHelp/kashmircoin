@@ -38,6 +38,9 @@ libzerocoin::Params* ZCParams;
 CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit for proof of work, results with 0,000244140625 proof-of-work difficulty
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 12);
 CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 20);
+CBigNum bnProofOfWorkLimitAfterFork(~uint256(0) >> 12); // allow 256 times lower stake limit after fork
+unsigned int forkNum = 89019;
+
 
 static const int64_t nTargetTimespan = 600; // Kashmircoin: every 10 minutes
 unsigned int nTargetSpacing = 101; // 101 seconds
@@ -47,7 +50,7 @@ unsigned int nStakeMaxAge = 2592000; // 30 days
 unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
 
 int nCoinbaseMaturity = 100;
-int nCoinstakeMaturity = 500;
+int nCoinstakeMaturity = 10;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 
@@ -1347,7 +1350,19 @@ unsigned int static GetNextWorkRequired_V2(const CBlockIndex* pindexLast)
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
 {
-    CBigNum bnTargetLimit = bnProofOfWorkLimit;
+    
+CBigNum bnTargetLimit;
+if (fProofOfStake) {
+if (pindexLast->nHeight > forkNum)
+bnTargetLimit = bnProofOfWorkLimitAfterFork;
+else
+bnTargetLimit = bnProofOfWorkLimit;
+} else {
+bnTargetLimit = bnProofOfStakeLimit;
+}
+
+if (pindexLast == NULL)
+return bnTargetLimit.GetCompact(); // genesis block
     
     if (fProofOfStake) {
     
@@ -2410,11 +2425,11 @@ bool CBlock::AcceptBlock()
     CBlockIndex* pindexPrev = (*mi).second;
     int nHeight = pindexPrev->nHeight+1;
 
-    // HARD FORK: switch to version 3 starting from PoS
+  /*  // HARD FORK: switch to version 3 starting from PoS
     if (nHeight > LAST4_POW_BLOCK && nVersion < 3)
         return DoS(100, error("AcceptBlock() : reject version <3 block at height %d", nHeight));
     if (nHeight <= LAST_POW_BLOCK && nVersion > 2)
-        return DoS(100, error("AcceptBlock() : reject version >2 block at height %d", nHeight));
+        return DoS(100, error("AcceptBlock() : reject version >2 block at height %d", nHeight));*/
         
     if (IsProofOfWork() && nHeight > LAST_POW_BLOCK2 && nHeight < MID_POW_BLOCK)
         return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
@@ -2432,12 +2447,12 @@ bool CBlock::AcceptBlock()
     if (nBits != GetNextWorkRequired(pindexPrev, IsProofOfStake()))
         return DoS(100, error("AcceptBlock() : incorrect %s", IsProofOfWork() ? "proof-of-work" : "proof-of-stake"));
 
-    // HARD FORK: Check timestamp against prev
+  /*  // HARD FORK: Check timestamp against prev
     // This would have prevented the KGW time warp...
     if (nHeight > LAST3_POW_BLOCK &&
       (GetBlockTime() <= pindexPrev->GetPastTimeLimit()
         || FutureDrift(GetBlockTime()) < pindexPrev->GetBlockTime()))
-        return error("AcceptBlock() : block's timestamp is too early");
+        return error("AcceptBlock() : block's timestamp is too early"); */
 
     // Check that all transactions are finalized
     BOOST_FOREACH(const CTransaction& tx, vtx)

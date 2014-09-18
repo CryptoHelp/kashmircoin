@@ -1,2 +1,2 @@
 // No build information available
-#define BUILD_DATE "2014-08-26 19:48:18 -0700"
+#define BUILD_DATE "2014-09-15 09:00:00 +0400"
