@@ -39,7 +39,7 @@ CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // "standard" scrypt target limit
 CBigNum bnProofOfStakeLimit(~uint256(0) >> 12);
 CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 20);
 CBigNum bnProofOfWorkLimitAfterFork(~uint256(0) >> 12); // allow 256 times lower stake limit after fork
-unsigned int forkNum = 89019;
+unsigned int forkNum = 89020;
 
 
 static const int64_t nTargetTimespan = 600; // Kashmircoin: every 10 minutes
