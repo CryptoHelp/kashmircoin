@@ -1035,7 +1035,7 @@ int64_t GetProofOfWorkReward(int nHeight, int64_t nFees, uint256 prevHash)
 
 	}
 
-    if(nHeight < 98001) //
+    if(nHeight < 398050) //
 
 	{
 
