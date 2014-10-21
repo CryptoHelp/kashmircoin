@@ -85,6 +85,7 @@
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
+        <file alias="mark1">res/images/mark1.png</file>
         <file alias="splash">res/images/splash.png</file>
         <file alias="main">res/images/main.png</file>
         <file alias="head">res/images/head.png</file>

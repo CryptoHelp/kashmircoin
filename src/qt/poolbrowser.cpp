@@ -51,7 +51,7 @@ PoolBrowser::PoolBrowser(QWidget *parent) :
     ui->setupUi(this);
     ui->buyquan->header()->resizeSection(0,120);
     ui->sellquan->header()->resizeSection(0,120);
-    setFixedSize(400, 420);
+    setFixedSize(660, 430);
     ui->customPlot->addGraph();
     ui->customPlot->setBackground(Qt::transparent);
     ui->customPlot2->addGraph();
@@ -81,7 +81,7 @@ void PoolBrowser::egaldo()
 
 void PoolBrowser::bittrex()
 {
-    QDesktopServices::openUrl(QUrl("https://www.bittrex.com/Market/Index?MarketName=BTC-KSC"));
+    QDesktopServices::openUrl(QUrl("https://cryptocointalk.com/topic/15234-kashmircoin-a-kind-of-bittrex-giveaway/"));
 }
 
 void PoolBrowser::swisscex()
