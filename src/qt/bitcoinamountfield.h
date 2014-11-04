@@ -48,7 +48,6 @@ private:
     QDoubleSpinBox *amount;
     QValueComboBox *unit;
     int currentUnit;
-    QLabel *label_btc;
 
     void setText(const QString &text);
     QString text() const;

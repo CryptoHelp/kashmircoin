@@ -20,7 +20,6 @@ StatisticsPage::StatisticsPage(QWidget *parent) :
     
     setFixedSize(400, 420);
     
-    connect(ui->startButton, SIGNAL(pressed()), this, SLOT(updateStatistics()));
 }
 
 int heightPrevious = -1;
@@ -33,7 +32,6 @@ double hardnessPrevious = -1;
 double hardnessPrevious2 = -1;
 int stakeminPrevious = -1;
 int stakemaxPrevious = -1;
-double marketcapPrevious = -1;
 QString stakecPrevious = "";
 
 
@@ -49,10 +47,8 @@ void StatisticsPage::updateStatistics()
     pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
     uint64_t nNetworkWeight = GetPoSKernelPS();
     int64_t volume = ((pindexBest->nMoneySupply)/100000000);
-    double marketcap = dollarg.toDouble() * volume;
     int peers = this->model->getNumConnections();
     pPawrate2 = (double)pPawrate;
-    ui->progressBar->setValue(nHeight);
     QString height = QString::number(nHeight);
     QString stakemin = QString::number(nMinWeight);
     QString stakemax = QString::number(nNetworkWeight);
@@ -64,19 +60,13 @@ void StatisticsPage::updateStatistics()
     else if (pindexBest->nHeight > 10000 && pindexBest->nHeight < 50000)
     {
         phase = "<p align=\"center\">(2) POS</p>";
-        ui->progressBar->setMinimum(10000);
-        ui->progressBar->setMaximum(50000);
     }
     else if (pindexBest->nHeight > 50000 && pindexBest->nHeight < 60000)
     {
         phase = "<p align=\"center\">(3) POW - POS</p>";
-
-        ui->progressBar->setMinimum(50000);
-        ui->progressBar->setMaximum(60000);
     }
     else
     {
-        ui->progressBar->hide();
         phase = "<p align=\"center\">(4) POS</p>";
     }
     QString subsidy = QString::number(nSubsidy, 'f', 6);
@@ -90,8 +80,8 @@ void StatisticsPage::updateStatistics()
 
     if(nHeight > heightPrevious)
     {
-        ui->progressBar->setValue(nHeight);
         ui->heightBox->setText("<font color=\"green\">" + height + "</font>");
+
     } else {
     ui->heightBox->setText(height);
     }
@@ -133,15 +123,7 @@ void StatisticsPage::updateStatistics()
         ui->diffBox->setText(hardness);        
     }
 
-    if(marketcap > marketcapPrevious)
-    {
-        ui->marketcap->setText("<font color=\"green\">" + QString::number(marketcap) + " $</font>");
-    } else if(marketcap < marketcapPrevious) {
-        ui->marketcap->setText("<font color=\"red\">" + QString::number(marketcap) + " $</font>");
-    } else {
-        ui->marketcap->setText(QString::number(marketcap) + " $");
-    }
-
+    
     if(pHardness2 > hardnessPrevious2)
     {
         ui->diffBox2->setText("<font color=\"green\">" + hardness2 + "</font>");
@@ -184,10 +166,10 @@ void StatisticsPage::updateStatistics()
     } else {
         ui->volumeBox->setText(qVolume + " KSC");
     }
-    updatePrevious(nHeight, nMinWeight, nNetworkWeight, phase, nSubsidy, pHardness, pHardness2, pPawrate2, Qlpawrate, peers, volume, marketcap);
+    updatePrevious(nHeight, nMinWeight, nNetworkWeight, phase, nSubsidy, pHardness, pHardness2, pPawrate2, Qlpawrate, peers, volume);
 }
 
-void StatisticsPage::updatePrevious(int nHeight, int nMinWeight, int nNetworkWeight, QString phase, double nSubsidy, double pHardness, double pHardness2, double pPawrate2, QString Qlpawrate, int peers, int volume,double marketcap)
+void StatisticsPage::updatePrevious(int nHeight, int nMinWeight, int nNetworkWeight, QString phase, double nSubsidy, double pHardness, double pHardness2, double pPawrate2, QString Qlpawrate, int peers, int volume)
 {
     heightPrevious = nHeight;
     stakeminPrevious = nMinWeight;
@@ -200,13 +182,19 @@ void StatisticsPage::updatePrevious(int nHeight, int nMinWeight, int nNetworkWei
     pawratePrevious = Qlpawrate;
     connectionPrevious = peers;
     volumePrevious = volume;
-    marketcapPrevious = marketcap;
 }
 
 void StatisticsPage::setModel(ClientModel *model)
 {
     updateStatistics();
     this->model = model;
+    
+    connect(model, SIGNAL(numConnectionsChanged(int)), this, SLOT(updateStatistics()));
+    connect(model, SIGNAL(numBlocksChanged(int,int)), this, SLOT(updateStatistics()));
+    QTimer *timerstat = new QTimer(this);
+    connect(timerstat, SIGNAL(timeout()), this, SLOT(updateStatistics()));
+    timerstat->start(7 * 1000);
+    updateStatistics();
 }
 
 

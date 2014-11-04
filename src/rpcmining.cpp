@@ -28,7 +28,7 @@ Value getmininginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("currentblocksize",(uint64_t)nLastBlockSize));
     obj.push_back(Pair("currentblocktx",(uint64_t)nLastBlockTx));
 
-    if(nBestHeight >= LAST_POW_BLOCK)
+    if(nBestHeight > LAST_POW_BLOCK2 && nBestHeight < MID_POW_BLOCK || nBestHeight > LAST2_POW_BLOCK && nBestHeight < MID2_POW_BLOCK || nBestHeight > LAST3_POW_BLOCK && nBestHeight < MID3_POW_BLOCK || nBestHeight > LAST4_POW_BLOCK)
     {
         diff.push_back(Pair("proof-of-stake",  GetDifficulty(GetLastBlockIndex(pindexBest, true))));
         diff.push_back(Pair("search-interval", (int)nLastCoinStakeSearchInterval));

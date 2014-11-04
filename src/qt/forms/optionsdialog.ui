@@ -434,6 +434,9 @@
          <property name="text">
           <string>Display coin &amp;control features (experts only!)</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>

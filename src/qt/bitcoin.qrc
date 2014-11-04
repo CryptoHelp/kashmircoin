@@ -82,6 +82,8 @@
 	<file alias="market">res/icons/market.png</file>
 	<file alias="toolsbar">res/icons/toolsbar.png</file>
 	<file alias="kashbit">res/icons/kashbit.png</file>
+	<file alias="bittrex">res/icons/bittrex.png</file>
+	<file alias="swisscex">res/icons/swisscex.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>

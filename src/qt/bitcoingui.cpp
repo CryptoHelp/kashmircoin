@@ -272,8 +272,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "gif", this);
 
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
-
     // Clicking on a transaction on the overview page simply sends you to transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), this, SLOT(gotoHistoryPage()));
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -680,24 +678,6 @@ void BitcoinGUI::optionsClicked()
     dlg.exec();
 }
 
-void BitcoinGUI::sConvert()
-{
-    if (convertmode == 0)
-    {
-        actionConvertIcon->setIcon(QIcon(":/icons/dollar").pixmap(20,20));
-        convertmode = 1;
-    }
-    else if (convertmode == 1)
-    {
-        actionConvertIcon->setIcon(QIcon(":/icons/bitcoiniconn").pixmap(20,20));
-        convertmode = 2;
-    }
-    else if (convertmode == 2)
-    {
-        actionConvertIcon->setIcon(QIcon(":/icons/sctask").pixmap(20,20));
-        convertmode = 0;
-    }
-}
 
 
 void BitcoinGUI::tutoWriteClicked()
@@ -917,8 +897,7 @@ void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int 
         QIcon icon = qvariant_cast<QIcon>(ttm->index(start,
                             TransactionTableModel::ToAddress, parent)
                         .data(Qt::DecorationRole));
-        if (convertmode == 0)
-        {
+
             notificator->notify(Notificator::Information,
                                 (amount)<0 ? tr("Sent transaction") :
                                              tr("Incoming transaction"),
@@ -930,37 +909,7 @@ void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int 
                                 .arg(BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), amount, true))
                                 .arg(type)
                                 .arg(address), icon);
-        }
-        if (convertmode == 1)
-        {
-            notificator->notify(Notificator::Information,
-                                (amount)<0 ? tr("Sent transaction") :
-                                             tr("Incoming transaction"),
-                                tr("Date: %1\n"
-                                   "Amount: %2\n"
-                                   "Type: %3\n"
-                                   "Address: %4\n")
-                                .arg(date)
-                                .arg(BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), dollarg.toDouble()*amount, true))
-                                .arg(type)
-                                .arg(address), icon);
-
-        }
-        if (convertmode == 2)
-        {
-            notificator->notify(Notificator::Information,
-                                (amount)<0 ? tr("Sent transaction") :
-                                             tr("Incoming transaction"),
-                                tr("Date: %1\n"
-                                   "Amount: %2\n"
-                                   "Type: %3\n"
-                                   "Address: %4\n")
-                                .arg(date)
-                                .arg(BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), bitcoing.toDouble()*amount, true))
-                                .arg(type)
-                                .arg(address), icon);
-        }
-    }
+            }
 }
 
 void BitcoinGUI::gotoOverviewPage()
@@ -972,7 +921,6 @@ void BitcoinGUI::gotoOverviewPage()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -988,7 +936,6 @@ void BitcoinGUI::gotoPoolBrowser()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
 
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -1004,7 +951,6 @@ void BitcoinGUI::gotoBlockBrowser()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
 
     exportAction->setEnabled(false);
@@ -1020,7 +966,6 @@ void BitcoinGUI::gotoStatisticsPage()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
 
     exportAction->setEnabled(false);
@@ -1036,7 +981,6 @@ void BitcoinGUI::gotoChatPage()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -1051,7 +995,6 @@ void BitcoinGUI::gotoKashbitPage()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setVisible(false);
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
@@ -1141,7 +1084,6 @@ void BitcoinGUI::gotoSettingsPage()
     actionConvertIcon->setEnabled(true);
     actionConvertIcon->setVisible(true);
     disconnect(actionConvertIcon, SIGNAL(triggered()), 0, 0);
-    connect(actionConvertIcon, SIGNAL(triggered()), this, SLOT(sConvert()));
     exportAction->setEnabled(false);
     exportAction->setVisible(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);

@@ -16,11 +16,8 @@
 #include <qmath.h>
 
 BitcoinAmountField::BitcoinAmountField(QWidget *parent):
-        QWidget(parent), amount(0), currentUnit(-1), label_btc(0)
+        QWidget(parent), amount(0), currentUnit(-1)
 {
-    label_btc = new QLabel(this);
-    label_btc->setText("");
-    label_btc->setStyleSheet("background-color:rgb(239,222,212);");
     amount = new QDoubleSpinBox(this);
     amount->setLocale(QLocale::c());
     amount->setDecimals(8);
@@ -36,7 +33,7 @@ BitcoinAmountField::BitcoinAmountField(QWidget *parent):
     layout->addWidget(unit);
     layout->addStretch(1);
     layout->setContentsMargins(0,0,0,0);
-    layout->addWidget(label_btc);
+
 
     setLayout(layout);
 
@@ -91,7 +88,6 @@ void BitcoinAmountField::setValid(bool valid)
 
 QString BitcoinAmountField::text() const
 {
-    label_btc->setText("Current value: "+ (QString::number(amount->value()*dollarg.toDouble())) +" $ or "+ (QString::number(amount->value()*bitcoing.toDouble()))+ " BTC");
     if (amount->text().isEmpty())
         return QString();
     else

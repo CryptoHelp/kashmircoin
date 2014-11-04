@@ -1490,12 +1490,14 @@ bool CWallet::CreateTransaction(CScript scriptPubKey, int64_t nValue, CWalletTx&
 
 // NovaCoin: get current stake weight
 bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64_t& nMinWeight, uint64_t& nMaxWeight, uint64_t& nWeight)
+	
 {
+
 	printf("GetStakeWeight : ForkTime = %li\n",STAKEFORKTIME);
 	printf("GetStakeWeight: %s\n", DateTimeStrFormat("%x %H:%M:%S", STAKEFORKTIME).c_str());
 	printf("GetStakeWeight : GetTime = %li\n",GetTime());
 	printf("GetStakeWeight: %s\n", DateTimeStrFormat("%x %H:%M:%S", GetTime()).c_str());
-	
+		
     // Choose coins to use
     int64_t nBalance = GetBalance();
 
@@ -1745,7 +1747,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (!txNew.GetCoinAge(txdb, nTxTime, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
 
-        int64_t nReward = GetProofOfStakeReward(nCoinAge, nFees);
+        int64_t nReward = GetProofOfStakeReward(nCoinAge, nFees, pindexBest->nHeight+1);
         if (nReward <= 0)
             return false;
 

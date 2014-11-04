@@ -224,7 +224,6 @@ private slots:
     void toggleHidden();
 
     void updateStakingIcon();
-    void sConvert();
 };
 
 #endif

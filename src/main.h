@@ -28,7 +28,7 @@ class CNode;
 
 
 static const int LAST_POW_BLOCK = 1676653; //
-static const int LAST_POW_BLOCK2 = 103000; //
+static const int LAST_POW_BLOCK2 = 100060; //
 static const int MID_POW_BLOCK = 398051; // 
 static const int LAST2_POW_BLOCK = 404035; //
 static const int MID2_POW_BLOCK = 1028511; //
@@ -127,7 +127,7 @@ bool LoadExternalBlockFile(FILE* fileIn);
 bool CheckProofOfWork(uint256 hash, unsigned int nBits);
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, bool fProofOfStake);
 int64_t GetProofOfWorkReward(int nHeight, int64_t nFees, uint256 prevHash);
-int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees);
+int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees, int nHeight);
 unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime);
 unsigned int ComputeMinStake(unsigned int nBase, int64_t nTime, unsigned int nBlockTime);
 int GetNumBlocksOfPeers();
